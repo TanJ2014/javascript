@@ -1,0 +1,45 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+.container{
+	width: 100%;
+	overflow: hidden;
+	background: #ddd;
+	position: relative;
+}
+.list{
+	list-style: none;
+}
+.list::after{
+	content: "";
+	display: block;
+	clear: both;
+}
+.item{
+	float: left;
+}
+.item img{
+	width: 100%;
+	height: 387px;
+	display: block;
+}
+.point{
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+.point-item{
+	width: 10px;
+	height: 10px;
+	margin:0 5px;
+	border-radius: 50%;
+	background: #fff;
+	opacity: .4;
+	float: left;
+	list-style: none;
+}
+.point-item.active{
+	opacity: 1;
+}

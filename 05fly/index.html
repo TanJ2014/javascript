@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> 移动效果（按轨迹移动）</title>
+	<style>
+		*{
+			padding: 0;
+			margin:0;
+		}
+		div{
+			position: absolute;
+			width: 66px;
+			height: 45px;
+			background: url("img/1.gif") no-repeat;
+			top:100px;
+			left: 50px;
+		}
+		p,input{
+			margin:10px;
+		}
+		/*禁止文字别选中*/
+		p{
+			-webkit-touch-callout: none;
+	        -moz-user-select: none;
+	        -ms-user-select: none;
+	        user-select: none;
+		}
+	</style>
+</head>
+<body>
+	<input type="button" value="根据鼠标点击位置移动"/>
+	<input type="button" value="根据鼠标移动的轨迹移动">
+	<p>请点击按钮激活功能</p>
+	<div></div>
+	<script>
+		window.onload = function(){
+			//获取需要使用的元素
+			var div = document.getElementsByTagName("div")[0];
+			var input = document.getElementsByTagName("input");
+			var p = document.getElementsByTagName("p")[0];
+			//记录两个按钮的激活状态0:第一个按钮激活 1：第二个按钮激活
+			var activeType = 0;
+			//记录小人的位置
+			var endT = 0,
+				endL = 0,
+				nowT = 0,
+				nowL = 0;
+			var posArr = []; //记录鼠标移动的路径
+			var timer = null;
+			//重置
+			var _reset = function(){
+				for(var i=0;i<input.length;i++){
+					input[i].value = input[i].value.replace("(已激活)","");
+					input[i].onmousedown = input[i].onmouseup = function (event){
+						(event || window.event).cancelBubble = true;	
+					};
+				}
+				p.innerHTML = "请点击按钮激活功能";
+				document.onclick = null;
+				document.onmousedown = null;
+				document.onmousemove = null;
+				document.onmouseup = null;
+				timer = null;
+			}
+
+			//按钮1激活
+			input[0].onclick = function(event){
+				//阻止冒泡
+				(event || window.event).cancelBubble = true;
+				activeType = 0;
+				_reset();
+				//记录当前小人的位置
+				nowT = div.offsetTop;
+				nowL = div.offsetLeft;
+				this.value += "(已激活)";
+				p.innerHTML = "鼠标点击页面， 人物将移动至鼠标位置！";
+				//点击页面
+				document.onclick = function(e){
+					(event || window.event).cancelBubble = true;	
+					if(activeType!=0) return;
+					var e = e || window.event
+					//清除定时器
+					clearInterval(timer);
+					endT = e.clientY;
+					endL = e.clientX;
+					div.style.background = "url(img/2.gif) no-repeat";
+					timer = setInterval(function(){
+						var ix = Math.floor((endL - nowL)/5);
+						var iy = Math.floor((endT - nowT)/5);
+						nowT = div.offsetTop;
+						nowL = div.offsetLeft;
+						//如果可移动的距离为0，将位置直接赋值为最终位置
+						if(ix==0&&iy==0){
+							div.style.top = endT + "px";
+							div.style.left = endL + "px";
+							//将背景图还原
+							div.style.background = "url(img/1.gif) no-repeat";
+							//清除定时器
+							clearInterval(timer);
+							return;
+						}
+						div.style.top = nowT + iy + "px";
+						div.style.left = nowL + ix + "px";
+					},30)
+				}
+			}
+			//按钮2激活
+			input[1].onclick = function(event){
+				(event || window.event).cancelBubble = true;
+				activeType = 1;
+				_reset();
+				//记录当前小人的位置
+				nowT = div.offsetTop;
+				nowL = div.offsetLeft;
+				//将初始位置放入数组
+				this.value += "(已激活)";
+				p.innerHTML = "按住鼠标左键，在页面划动，人物将按照鼠标轨迹移动。";
+				//鼠标按下，记录鼠标的初始位置
+				document.onmousedown = function(e){
+					var e = e || window.event;
+					clearInterval(timer);
+					posArr.push({x:e.clientX,y:e.clientY});
+					//鼠标按下且移动，记录移动的路径
+					document.onmousemove = function(e){
+						var e = e || window.event;
+						posArr.push({x:e.clientX,y:e.clientY});
+					}
+				}
+				//松开鼠标，小人移动
+				document.onmouseup = function(e){
+					document.onmousemove = null;
+					div.style.background = "url(img/2.gif) no-repeat";
+					timer = setInterval(function(){
+						if(posArr.length<=0){
+							div.style.background = "url(img/1.gif) no-repeat";
+							clearInterval(timer);
+							return;
+						}
+						div.style.left = posArr[0].x + "px";
+						div.style.top = posArr[0].y + "px";
+						posArr.shift();
+					},30);
+				}
+			}
+
+		}
+	</script>
+</body>
+</html>

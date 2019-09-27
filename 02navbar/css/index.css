@@ -1,0 +1,86 @@
+*{
+	padding: 0;
+	margin:0;
+}
+body{
+	color: #212121;
+	height: 
+}
+a{
+	text-decoration: none;
+}
+.nav-bar{
+	width: 100%;
+	margin-top: 140px;
+	background: #fff;
+	height: 63px;
+	border:1px solid rgb(224,224,224); 
+	border-right: 0;
+	border-left: 0;
+}
+#fixed{
+	margin-top: 0;
+	position: fixed;
+	top: -65px;
+	transition:all .3s linear;
+}
+#fixed.active{
+	top: 0;
+}
+.nav-bar .container{
+	width: 1226px;
+	height: 60px;
+	background: #fff;
+	margin:0 auto;
+}
+.nav-bar .container .proj-name{
+	display: inline-block;
+	height: 60px;
+	line-height: 60px;
+	font-size: 18px;
+	font-weight: 400;
+}
+.nav-bar .container .right{
+	display: inline-block;
+	float: right;
+	height: 30px;
+	margin-top: 18px
+}
+.nav-bar .container .right a:not(.buy-now){
+	font-size: 14px;
+	line-height: 21px;
+	font-weight: 400;
+	color: #212121;
+}
+.nav-bar .container .right a:not(.buy-now):hover{
+	color: #ff6700!important;
+}
+.nav-bar .container .right .cur{
+	color: #ff6700!important;
+}
+.nav-bar .container .right .separator{
+	color: #e0e0e0;
+	font-size: 14px;
+	line-height: 21px;
+	margin: 0 3.5px;
+}
+.nav-bar .container .right .buy-now{
+	display: inline-block;
+	height: 28px;
+	line-height: 28px;
+	width: 118px;
+	font-size: 12px;
+	margin-left: 3.5px;
+	text-align: center;
+	border:1px solid rgb(255,103,0);
+	background: #ff6700;
+	color: #fff;
+}
+.nav-bar .container .right .buy-now:hover{
+	background: #f25807;
+	border-color: #f25807;
+	transition: all .3s;
+}
+.scroll{
+	height: 2000px;
+}
